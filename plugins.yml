@@ -1,0 +1,183 @@
+servers:
+  1.17-smp:
+    plugins:
+      - name: Pl3xMap
+      - name: pl3xmap-signs
+  1.18-common:
+    plugins:
+      - name: voicechat-bukkit-1.18.2
+        version: 2.2.28
+  1.17-common:
+    plugins:
+      - name: voicechat-bukkit-1.17.1
+        version: 2.2.28
+  smp-common:
+    plugins:
+      - name: ActionHealth
+  creative:
+    inherit:
+      - common
+      - 1.17-common
+    pluginPath: /srv/minecraft/creative/plugins/
+    plugins:
+      - name: HolographicDisplays
+      - name: HolographicExtension
+      - name: EssentialsXSpawn
+      - name: WorldSystem
+        version: 2.4.12
+  villager-defense:
+    inherit:
+      - common
+      - 1.17-common
+    pluginPath: /srv/minecraft/villager-defense/plugins/
+  mcdev:
+    inherit:
+      - common
+      - smp-common
+      - 1.18-common
+      - SMP
+    pluginPath: /srv/minecraft/mcdev/plugins/
+    plugins:
+      - name: tabtps-spigot
+        version: '*'
+      - name: item-nbt-api-plugin
+        version: 2.9.2
+      - name: QuickShop
+        version: 5
+      - name: AngelChest
+        version: '*'
+      - name: GameModeInventories
+        version: '*'
+  SMP:
+    inherit:
+      - common
+      - smp-common
+      - 1.17-common
+      - 1.17-smp
+    pluginPath: /srv/minecraft/server/plugins/
+    plugins:
+      - name: ATMSigns
+      - name: Harbor
+      - name: BetterRTP
+      - name: CoreProtect
+        version: 19.5.*
+      - name: Chunky
+        version: 1.2.86
+      - name: ChunkyBorder
+        version: 1.0.38
+      - name: GameModeInventories
+        version: 3.3.3
+      - name: HolographicDisplays
+        version: 2
+      - name: Regions
+        version: '0.3'
+      - name: Shopkeepers
+        version: 2.13.2
+      - name: Lands
+        version: 5.11.18
+      - name: OpenInv
+        version: 4.1.8
+      - name: AngelChest
+        version: 4.2.0
+      - name: PvPManager
+        version: 3
+      - name: EssentialsXSpawn
+        version: 2
+      - name: MythicMobs
+        version: 5.0.0-alpha1
+      - name: Model-Engine
+        version: 2.*
+      - name: LibsDisguises
+        version: 10
+      - name: QuickShop
+        version: 4.0
+      - name: ProtocolLib
+        version: 4.8.0
+  skyblock:
+    inherit:
+      - 1.18-common
+      - common
+    pluginPath: /srv/minecraft/skyblock/plugins/
+    plugins:
+      - name: BentoBox
+        version: 1.19.0
+  lobby:
+    pluginPath: /srv/minecraft/lobby/plugins/
+    inherit:
+      - common
+    plugins:
+      - name: ItemJoin
+      - name: Parkour
+        version: 6.7.1
+      - name: GadgetsMenu
+        version: 5.0.2
+      - name: Denizen
+        version: 1.2.1-b1743-REL
+      - name: JumpPads
+        version: 1.25.6
+      - name: VoidSpawn
+        version: 1.0.1
+      - name: EssentialsXSpawn
+        version: 2.18.2
+      - name: HolographicExtension
+        version: 1.10.9
+      - name: HolographicDisplays
+        version: 2.4.9
+      - name: Citizens
+        version: 2.0.28-5
+      - name: voicechat-bukkit-1.17.1
+        version: 2.2.28
+  common:
+    plugins:
+      - name: Advanced-Portals
+        version: 0.7.1
+      - name: DeluxeMenus
+        version: 1.13.3
+      - name: AsyncWorldEdit
+        version: 3.9.1
+      - name: CoordinatesHUD
+      - name: BungeeTabListPlus_BukkitBridge
+        version: ~3.4
+      - name: BuycraftX
+      - name: DBVerifier
+        version: 1.6.5-malloc
+      - name: DiscordSRV
+        version: 1.24.0
+      - name: EssentialsX
+        version: 2.18.2
+      - name: GSit
+        version: 6.0.2
+      - name: item-nbt-api-plugin
+        version: 2.*
+      - name: LuckPerm-Bukkit
+        version: 5.4.9
+      - name: PlaceholderAPI
+        version: 2.10.9
+      - name: Plan
+        version: 5.4.0-build-1354
+      - name: PlayerPoints
+        version: 3.0.3
+      - name: ProtocolLib
+        version: 4.8.0
+      - name: SuperVanish
+        version: 6.2.6
+      - name: tabtps-spigot
+        version: 1.3.8
+      - name: Umfrage
+        version: 1.6.3-STABLE
+      - name: Vault
+      - name: VentureChat
+        version: 3.3.2
+      - name: floodgate-bukkit
+        version: 53
+      - name: DisableJoinMessage
+      - name: worldedit-bukkit
+      - name: worldguard-bukkit
+      - name: SkQuery
+        version: 4.1.4
+      - name: Skript
+        version: 2.6.0-beta2
+      - name: skUtilities
+        version: 0.9.2
+      - name: Skungee
+      - name: NametagEdit
