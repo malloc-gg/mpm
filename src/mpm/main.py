@@ -192,7 +192,7 @@ def do_server_sync(args, config):
         print('{} ({}):'.format(server.name, server.path))
         outdatedLinks = []
         available = []
-        for state in sorted(server.pluginStates(config.repositories())):
+        for state in server.pluginStates(config.repositories()):
             if isinstance(state, OutdatedSymlink):
                 outdatedLinks.append(state)
             elif isinstance(state, Available):
