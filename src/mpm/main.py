@@ -167,6 +167,9 @@ def do_server_add_plugin(args, config):
             bestVersions = list(reversed(sorted(allVersions)))
             if len(bestVersions) > 0:
                 pluginSpec = PluginSpec(pluginSpec, bestVersions[0])
+            else:
+                print("Cannot find plugin {} in any repository".format(pluginSpec))
+                sys.exit(1)
 
         plugins.append(pluginSpec)
 
