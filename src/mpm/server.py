@@ -22,10 +22,15 @@ class Server:
             except:
                 continue
 
-    def add_plugin(self, pluginSpec):
+    def hasPlugin(self, pluginSpec):
         for plugin in self.config['plugins']:
             if plugin['name'] == pluginSpec.name:
-                raise KeyError("Cannot add plugin multiple times.")
+                return True
+        return False
+
+    def add_plugin(self, pluginSpec):
+        if self.hasPlugin(pluginSpec):
+            raise KeyError("Cannot add plugin multiple times.")
         self.config['plugins'].append({'name': pluginSpec.name, 'version': str(pluginSpec.versionSpec)})
 
     def pluginStates(self, repos):

@@ -157,9 +157,17 @@ def do_server_add_plugin(args, config):
                 print("Cannot find plugin {} in any repository".format(pluginSpec))
                 sys.exit(1)
 
+        if server.hasPlugin(pluginSpec):
+            print("{} is already installed!".format(pluginSpec.name))
+            continue
+
         plugins.append(pluginSpec)
 
-    print("Added {} to {}".format(pluginSpec, server.name))
+    print("Found new {} plugins to install.".format(len(plugins)))
+
+    if len(plugins) == 0:
+        return
+
     for pluginSpec in plugins:
         print("\t{} {}".format(pluginSpec.name, pluginSpec.versionSpec))
     print("Add these plugins to server {}? [y/N]".format(server.name))
