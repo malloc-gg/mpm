@@ -164,7 +164,9 @@ def do_server_add_plugin(args, config):
             allVersions = []
             for repo in config.repositories():
                 allVersions += repo.versionsForPlugin(pluginSpec)
-            pluginSpec = PluginSpec(pluginSpec, list(reversed(sorted(allVersions)))[0])
+            bestVersions = list(reversed(sorted(allVersions)))
+            if len(bestVersions) > 0:
+                pluginSpec = PluginSpec(pluginSpec, bestVersions[0])
 
         plugins.append(pluginSpec)
 
