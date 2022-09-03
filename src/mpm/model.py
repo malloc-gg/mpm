@@ -8,8 +8,8 @@ version_pattern = re.compile('^(?P<name>.+)-(?P<version>(?:\.?\d+)+).+jar$')
 @total_ordering
 class Plugin:
     def __init__(self, path):
-        self.path = path
-        pluginName = os.path.basename(path)
+        self.path = os.path.realpath(path)
+        pluginName = os.path.basename(self.path)
         pluginMatches = version_pattern.match(pluginName)
 
         if pluginMatches is None:
