@@ -5,9 +5,9 @@ import sys
 import yaml
 import os
 
-from repo import Repo
-from server import Server
-from model import *
+from mpm.repo import Repo
+from mpm.server import Server
+from mpm.model import *
 
 try:
         from yaml import CLoader as Loader, CDumper as Dumper
@@ -23,7 +23,7 @@ class Config():
 
     def __init__(self, path):
         if path is None:
-            path = './mpm.yaml'
+            path = os.path.expanduser('~/mpm.yaml')
         self.path = path
         with open(path, 'r') as fd:
             self.yaml = yaml.load(fd, Loader=Loader)

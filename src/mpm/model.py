@@ -3,8 +3,6 @@ from functools import total_ordering
 import os
 import re
 
-#version_pattern = re.compile('^(?P<name>.*)-(?P<version>[^-]+)(?P<extra>-[^-]+)?\.jar$')
-version_pattern = re.compile('^(?P<name>.*)-(?P<version>[^-]+(?:-[^-]+)?)\.jar$')
 version_pattern = re.compile('^(?P<name>.+)-(?P<version>(?:\.?\d+)+).+jar$')
 
 @total_ordering

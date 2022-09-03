@@ -1,4 +1,4 @@
-from model import *
+from mpm.model import *
 import shutil
 
 class Server:

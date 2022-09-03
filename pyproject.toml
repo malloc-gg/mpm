@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools", "wheel", "setuptools-pipfile"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools-pipfile]
+
+[project]
+name = "minecraft-package-manager"
+version = "0.0.1"
+
+[project.scripts]
+mpm = "mpm.main:main"
