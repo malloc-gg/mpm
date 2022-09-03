@@ -8,6 +8,7 @@ import os
 from mpm.repo import Repo
 from mpm.server import Server
 from mpm.model import *
+from mpm.transactions import Resolver
 
 try:
         from yaml import CLoader as Loader, CDumper as Dumper
@@ -113,44 +114,29 @@ def do_repo_import(args, config):
 
 def do_server_add(args, config):
     config.add_server(args.name, args.path)
+    server = config.server(args.name)
+    for plugin in server.installedPlugins():
+        try:
+            server.add_plugin(PluginSpec(plugin.name, plugin.version))
+        except:
+            pass
+    config.update_server(server.name, server.config)
     config.save()
     print("Added server {} in {}".format(args.name, args.path))
 
 def do_server_list(args, config):
     for server in config.servers():
-        print('{} ({}):'.format(server.name, server.path))
-        outdatedLinks = []
-        missing = []
-        installed = []
-        unmanaged = []
-        conflicts = []
-        for state in server.pluginStates(config.repositories()):
-            if isinstance(state, OutdatedSymlink):
-                outdatedLinks.append(state)
-            elif isinstance(state, Installed):
-                installed.append(state)
-            elif isinstance(state, MissingVersions):
-                missing.append(state)
-            elif isinstance(state, UnmanagedFile):
-                unmanaged.append(state)
-            elif isinstance(state, SymlinkConflict):
-                conflicts.append(state)
-
-        print("Installed plugins:")
-        for state in sorted(installed):
-            print("\t{} {}: {}".format(state.plugin.name, state.plugin.versionSpec, state.currentVersion))
-        print("Oudated symlinks:")
-        for state in sorted(outdatedLinks):
-            print("\t{} {}: Current: {} Wanted: {}".format(state.plugin.name, state.plugin.versionSpec, state.currentVersion, state.wantedVersion))
-        print("Missing plugins:")
-        for state in sorted(missing):
-            print("\t{}: {}".format(state.plugin.name, state.plugin.versionSpec))
-        print("Unmanaged files:")
-        for state in sorted(unmanaged):
-            print("\t{}".format(state.filename))
-        print("Symlink Conflicts:")
-        for state in sorted(conflicts):
-            print("\t{}.jar".format(state.plugin.name))
+        print('{} ({})'.format(server.name, server.path))
+        foundPlugins = []
+        installedPlugins = list(server.installedPlugins())
+        for wanted in server.wantedPlugins():
+            for installed in installedPlugins:
+                if installed.name == wanted.name:
+                    foundPlugins.append(wanted.name)
+                    print('\t{} {} (wanted: {})'.format(installed.name, installed.version, wanted.versionSpec))
+        for installed in installedPlugins:
+            if installed.name not in foundPlugins:
+                print('\t{} {}'.format(installed.name, installed.version))
 
 def do_server_add_plugin(args, config):
     server = config.server(args.server)
@@ -188,38 +174,23 @@ def do_server_add_plugin(args, config):
         print("Cancelled.")
 
 def do_server_sync(args, config):
-    for server in config.servers():
-        print('{} ({}):'.format(server.name, server.path))
-        outdatedLinks = []
-        available = []
-        for state in server.pluginStates(config.repositories()):
-            if isinstance(state, OutdatedSymlink):
-                outdatedLinks.append(state)
-            elif isinstance(state, Available):
-                available.append(state)
-
-        print("Plugins to update:")
-        for state in sorted(outdatedLinks):
-            print("\t{} {}: Current: {} Wanted: {}".format(state.plugin.name, state.plugin.versionSpec, state.currentVersion, state.wantedVersion))
-        print("New plugins to install:")
-        for state in sorted(available):
-            print("\t{}: {}".format(state.plugin.name, state.plugin.version))
-
-        if len(outdatedLinks) > 0 or len(available) > 0:
-            print("Apply changes? [y/N]")
-            answer = input().lower()
-            if answer == "y":
-                for state in available:
-                    server.installVersion(state.plugin)
-                    server.updateSymlinkForPlugin(state.plugin, state.plugin.version)
-                    print("Installed {} {}".format(state.plugin.name, state.plugin.version))
-                for state in outdatedLinks:
-                    server.updateSymlinkForPlugin(state.plugin, state.wantedVersion)
-                    print("Updated {} to {}".format(state.plugin.name, state.wantedVersion))
-            else:
-                print("Not applying changes.")
-        else:
-            print("No changes to apply.")
+    resolver = Resolver(config.servers(), config.repositories())
+    isEmpty = True
+    for trans in resolver.transactions():
+        isEmpty = False
+        print("\t{}".format(trans))
+    if isEmpty:
+        print("No changes to process.")
+        return
+    print("Apply changes? [y/N]")
+    answer = input().lower()
+    if answer == "y":
+        print("Testing transaction...") 
+        for trans in resolver.transactions():
+            trans.test()
+        print("Running transaction...")
+        for trans in resolver.transactions():
+            trans.run()
 
 def main():
     parser = argparse.ArgumentParser(description='Paper Plugin Sync')

@@ -22,6 +22,12 @@ class Plugin:
         except ValueError:
             raise ValueError("Cannot derive semver from '{}'".format(path))
 
+    def __str__(self):
+        return repr(self)
+
+    def __repr__(self):
+        return "{}-{}".format(self.name, self.version)
+
     def __eq__(self, other):
         return self.name == other.name and self.version == other.version
 

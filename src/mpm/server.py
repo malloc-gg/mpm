@@ -8,8 +8,19 @@ class Server:
         self.path = config['path']
         self.pluginPath = self.path+'/plugins'
 
-    def plugins(self):
-        return [PluginSpec(p['name'], p['version']) for p in self.config['plugins']]
+    def __str__(self):
+        return self.name
+
+    def wantedPlugins(self):
+        return [PluginSpec(p['name'], p.get('version', '*')) for p in self.config['plugins']]
+
+    def installedPlugins(self):
+        plugins = os.listdir(self.pluginPath)
+        for pluginJar in plugins:
+            try:
+                yield Plugin(os.path.join(self.pluginPath, pluginJar))
+            except:
+                continue
 
     def add_plugin(self, pluginSpec):
         for plugin in self.config['plugins']:
@@ -19,7 +30,7 @@ class Server:
 
     def pluginStates(self, repos):
         managedPluginFilenames = []
-        for plugin in self.plugins():
+        for plugin in self.wantedPlugins():
             compatibleVersions = []
             pluginLinkName = '{}.jar'.format(plugin.name)
             managedPluginFilenames.append(pluginLinkName)
@@ -90,7 +101,3 @@ class Server:
         if os.path.lexists(pluginSymlink):
             os.unlink(pluginSymlink)
         os.symlink(linkDst, pluginSymlink)
-
-    def installVersion(self, plugin):
-        dest = os.path.join(self.pluginPath, 'versions/{}-{}.jar'.format(plugin.name, plugin.version))
-        shutil.copyfile(plugin.path, dest)
