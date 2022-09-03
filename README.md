@@ -1,6 +1,6 @@
-# A tool to manage plugins on play.malloc.gg
+# Minecraft Plugin Sync
 
-plugin-sync is a tool used to maintain the various servers and their plugins on
+mpm is a tool used to maintain the various servers and their plugins on
 play.malloc.gg.
 
 Malloc runs a heterogenous environment of server versions, depending on what
@@ -12,7 +12,7 @@ tool to help out the workload.
 
 ## Use cases
 
-plugin-sync is highly specialized for the purposes of malloc.gg, but it should
+mpm is highly specialized for the purposes of malloc.gg, but it should
 be able to work in other systems where:
 
 - You have multiple servers in a network
