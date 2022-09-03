@@ -124,7 +124,7 @@ def do_server_list(args, config):
         installed = []
         unmanaged = []
         conflicts = []
-        for state in sorted(server.pluginStates(config.repositories())):
+        for state in server.pluginStates(config.repositories()):
             if isinstance(state, OutdatedSymlink):
                 outdatedLinks.append(state)
             elif isinstance(state, Installed):
